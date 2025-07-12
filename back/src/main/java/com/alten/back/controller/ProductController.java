@@ -1,9 +1,12 @@
 package com.alten.back.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,23 +33,29 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product one(@PathVariable Long id) {
+    public Optional<Product> getProduct(@PathVariable Long id) {
         return productService.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Product product) {
+    public ResponseEntity<?> create(@RequestBody Product product, Authentication auth) {
+        if (!isAdmin(auth)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         return ResponseEntity.ok(productService.save(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product, Authentication auth) {
+        if (!isAdmin(auth)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         return ResponseEntity.ok(productService.update(id, product));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-       productService.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Long id, Authentication auth) {
+       if (!isAdmin(auth)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        productService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    private boolean isAdmin(Authentication auth) {
+        return auth != null && auth.getName().equalsIgnoreCase("admin@admin.com");
     }
 }

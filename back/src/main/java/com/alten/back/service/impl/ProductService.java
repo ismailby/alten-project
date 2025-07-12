@@ -1,15 +1,18 @@
 package com.alten.back.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alten.back.exception.ProductNotFoundException;
 import com.alten.back.model.Product;
 import com.alten.back.repository.ProductRepository;
+import com.alten.back.service.IProductService;
 
 @Service
-public class ProductService {
+public class ProductService implements IProductService{
     @Autowired
     private ProductRepository productRepository;
 
@@ -17,9 +20,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product findById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit introuvable"));
+    @Override
+    public Optional<Product> findById(Long id) {
+        return Optional.ofNullable(productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id)));
     }
 
     public Product save(Product product) {
@@ -29,9 +33,9 @@ public class ProductService {
     }
 
     public Product update(Long id, Product updated) {
-        Product product = findById(id);
+        Optional<Product> product = productRepository.findById(id);
         updated.setId(id);
-        updated.setCreatedAt(product.getCreatedAt());
+        updated.setCreatedAt(product.get().getCreatedAt());
         updated.setUpdatedAt(System.currentTimeMillis());
         return productRepository.save(updated);
     }
@@ -39,4 +43,5 @@ public class ProductService {
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
+    
 }
