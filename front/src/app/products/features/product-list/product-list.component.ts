@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
+import { TokenStorageService } from "app/services/token-storage.service";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
@@ -39,8 +40,9 @@ export class ProductListComponent implements OnInit {
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
-
+constructor (private tokenStorage:TokenStorageService){}
   ngOnInit() {
+      const token = this.tokenStorage.saveToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NTI1MjI5OTgsImV4cCI6MTc1MjUyMzg5OH0.B1GQR4bw4mTuknEiIp7rlPoIPOF9c9ELR2TwPYoeheg");
     this.productsService.get().subscribe();
   }
 
