@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,9 +45,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+        		.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                		 .requestMatchers("/api/auth/*","/h2-console/**", "/account", "/token").permitAll()
+                		 .requestMatchers("/api/auth/*","/h2-console/**","/swagger-ui/**",
+                                 "/swagger-resources/*",
+                                 "/v3/api-docs/**", "/account", "/token").permitAll()
                          .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 		.anyRequest().authenticated()
                 		)
