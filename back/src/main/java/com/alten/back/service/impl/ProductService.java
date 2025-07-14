@@ -39,6 +39,7 @@ public class ProductService implements IProductService {
 		Product productEntity = mapper.productDTOToProduct(productDTO);
 		productEntity.setCreatedAt(System.currentTimeMillis());
 		productEntity.setUpdatedAt(System.currentTimeMillis());
+		productEntity.setId(null);
 		return mapper.productToProductDTO(productRepository.save(productEntity));
 	}
 

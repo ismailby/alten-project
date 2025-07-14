@@ -20,8 +20,13 @@ import com.alten.back.model.User;
 import com.alten.back.service.IAuthService;
 import com.alten.back.service.ICartService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/cart")
+
+@Tag(name = "CartItem Controller", description = "Controller for Cart Items")
 public class CartItemController {
 
 	@Autowired
@@ -30,12 +35,15 @@ public class CartItemController {
 	@Autowired
 	private IAuthService authService;
 
+	@Operation(summary = "Get CardItem", description = "Get CardItem")
 	@GetMapping
 	public ResponseEntity<?> getCart(Authentication auth) {
 		Optional<User> user = Optional.ofNullable(authService.findByEmail(auth.getName()).orElseThrow());
 		return ResponseEntity.ok(cartService.getCart(user.get()));
 	}
 
+	
+	@Operation(summary = "ADD CardItem", description = "Add CardItem")
 	@PostMapping
 	public ResponseEntity<?> addToCart(@RequestBody CartRequest cartItemrequest, Authentication auth)
 			throws ErrorResponse {
@@ -44,6 +52,8 @@ public class CartItemController {
 		return ResponseEntity.ok("Produit ajouté au panier");
 	}
 
+	
+	@Operation(summary = "Delete product from CartItem", description = "Delete product from CartItem")
 	@DeleteMapping("/{productId}")
 	public ResponseEntity<?> removeFromCart(@PathVariable Long productId, Authentication auth) throws ErrorResponse {
 		User user = authService.findByEmail(auth.getName()).orElseThrow();
@@ -51,6 +61,7 @@ public class CartItemController {
 		return ResponseEntity.ok("Produit supprimé du panier");
 	}
 
+	@Operation(summary = "Clear CartItem", description = "Clear CartItem")
 	@DeleteMapping
 	public ResponseEntity<?> clearCart(Authentication auth) {
 		User user = authService.findByEmail(auth.getName()).orElseThrow();

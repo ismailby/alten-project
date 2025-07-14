@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alten.back.model.User;
 import com.alten.back.service.impl.UserServiceImpl;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User Controller", description = "User")
 public class UserController {
 
     @Autowired
