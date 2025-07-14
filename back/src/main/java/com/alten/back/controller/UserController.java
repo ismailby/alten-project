@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody User user) {
-        return ResponseEntity.ok(userService.save(user));
+        return ResponseEntity.ok(userService.create(user));
     }
 
     @GetMapping
@@ -36,8 +36,6 @@ public class UserController {
     public ResponseEntity<User> getById(@PathVariable Long id) {
         return ResponseEntity.of(userService.findById(id));
     }
-
-    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

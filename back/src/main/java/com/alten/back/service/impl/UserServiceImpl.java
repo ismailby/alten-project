@@ -16,7 +16,7 @@ public class UserServiceImpl {
     private UserRepository userRepository;
 
   
-    public User save(User user) {
+    public User create(User user) {
         // Hashage du mot de passe si nécessaire
         return userRepository.save(user);
     }
