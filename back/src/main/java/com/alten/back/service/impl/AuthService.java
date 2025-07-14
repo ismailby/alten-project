@@ -2,6 +2,7 @@ package com.alten.back.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,9 +64,17 @@ public class AuthService implements IAuthService {
 		} catch (AuthenticationException e) {
 			log.error(e.getMessage());
 			throw new ErrorResponse("Invalid username or password", Constants.ERROR_401, HttpStatus.UNAUTHORIZED);
-			
+
 		}
 
+	}
+
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
+	}
+
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 
 }
