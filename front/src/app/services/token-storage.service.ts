@@ -18,4 +18,9 @@ export class TokenStorageService {
     localStorage.removeItem(this.TOKEN_KEY);
   }
 
+
+  signOut(){
+    
+  }
+
 }

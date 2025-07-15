@@ -1,0 +1,27 @@
+<p-table [value]="cartItems" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr><td colspan="5"> <button (click)="clearCart()" class="p-button">Vider cart</button></td></tr>
+    
+    <tr>
+          <th>Produit</th>
+      <th>Catégorie</th>
+      <th>Prix</th>
+      <th>Quantité</th>
+      <th>Total</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+ 
+  <ng-template pTemplate="body" let-item>
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.product.category }}</td>
+      <td>{{ item.product.price }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.product.price * item.quantity}}</td>
+        <td><button (click)="removeItem(item.product.id)" class="p-button">delete</button></td>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    
+  </ng-template>
+</p-table>
