@@ -1,5 +1,6 @@
 package com.alten.back.controller;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ public class CartItemController {
 			throws ErrorResponse {
 		User user = authService.findByEmail(auth.getName()).orElseThrow();
 		cartService.addToCart(user, cartItemrequest.getProductId(), cartItemrequest.getQuantity());
-		return ResponseEntity.ok("Produit ajouté au panier");
+		//return ResponseEntity.ok("Produit ajouté au panier");
+		return ResponseEntity.ok(Map.of("message", "Produit ajouté au panier"));
 	}
 
 	
@@ -58,7 +60,7 @@ public class CartItemController {
 	public ResponseEntity<?> removeFromCart(@PathVariable Long productId, Authentication auth) throws ErrorResponse {
 		User user = authService.findByEmail(auth.getName()).orElseThrow();
 		cartService.removeFromCart(user, productId);
-		return ResponseEntity.ok("Produit supprimé du panier");
+		return ResponseEntity.ok(Map.of("message", "Produit supprimé du panier"));
 	}
 
 	@Operation(summary = "Clear CartItem", description = "Clear CartItem")
@@ -66,7 +68,8 @@ public class CartItemController {
 	public ResponseEntity<?> clearCart(Authentication auth) {
 		User user = authService.findByEmail(auth.getName()).orElseThrow();
 		cartService.clearCart(user);
-		return ResponseEntity.ok("Panier vidé");
+		return ResponseEntity.ok(Map.of("message", "Panier vidé"));
+		
 	}
 
 }
